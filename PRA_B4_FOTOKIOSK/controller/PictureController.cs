@@ -23,16 +23,30 @@ namespace PRA_B4_FOTOKIOSK.controller
         public void Start()
         {
 
+
+            PicturesToDisplay.Clear();
+
             // Initializeer de lijst met fotos
             // WAARSCHUWING. ZONDER FILTER LAADT DIT ALLES!
             // foreach is een for-loop die door een array loopt
             foreach (string dir in Directory.GetDirectories(@"../../../fotos"))
             {
-                /**
-                 * dir string is de map waar de fotos in staan. Bijvoorbeeld:
-                 * \fotos\0_Zondag
-                 */
-                foreach (string file in Directory.GetFiles(dir))
+                var now  =DateTime.Now;
+                int dayToday = (int)now.DayOfWeek;
+
+                string folderName = Path.GetFileName(dir); // bijv. "0_Zondag"
+                string[] parts = folderName.Split('_');
+
+
+                if (parts.Length > 0 && int.TryParse(parts[0], out int folderDay) && folderDay == dayToday)
+                
+
+                    /**
+                     *
+                     * dir string is de map waar de fotos in staan. Bijvoorbeeld:
+                     * \fotos\0_Zondag
+                     */
+                    foreach (string file in Directory.GetFiles(dir))
                 {
                     /**
                      * file string is de file van de foto. Bijvoorbeeld:
