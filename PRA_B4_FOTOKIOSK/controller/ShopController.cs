@@ -71,9 +71,39 @@ namespace PRA_B4_FOTOKIOSK.controller
 
               double final = selectedProduct.Price * (int)amount;
 
-                 string finalString = final.ToString();
+              string finalString = final.ToString();
 
-            ShopManager.SetShopReceipt("Eindbedrag\n€" + finalString);
+            ShopManager.SetShopReceipt("Bon: \n");
+
+            List<OrderedProduct> list = new List<OrderedProduct>();
+
+            list.Add(new OrderedProduct((int)fotoId, selectedProduct.Name, (int)amount, final));
+
+            ShopManager.AddShopReceipt("FotoId: " + fotoId + "\nProduct: " + selectedProduct.Name + "\nAantal: " + amount + "\nTotaal Prijs: €" + finalString + "\n\n");
+
+
+
+           
+            // Get the base directory (e.g., bin\Debug\net6.0-windows)
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            // Go up three levels to reach the project root (where the .csproj is)
+            string projectRoot = Directory.GetParent(baseDir).Parent.Parent.Parent.FullName;
+
+            // Combine with your file name
+            string filePath = Path.Combine(projectRoot, "Bon.txt");
+
+            string tekst = "Bon: " + "\nFotoId: " + fotoId + "\nProduct: " + selectedProduct.Name + "\nAantal: " + amount + "\nTotaal Prijs: €" + finalString + "\n\n";
+
+           
+
+            File.WriteAllText(filePath, tekst);
+
+
+
+
+
+
 
 
 
