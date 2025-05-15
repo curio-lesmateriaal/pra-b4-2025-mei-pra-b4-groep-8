@@ -1,6 +1,7 @@
 ﻿using PRA_B4_FOTOKIOSK.magie;
 using PRA_B4_FOTOKIOSK.models;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,13 +18,12 @@ namespace PRA_B4_FOTOKIOSK.controller
 
         public void Start()
         {
-            // Stel de prijslijst in aan de rechter kant.
-            
-
-          
-
             // Stel de bon in onderaan het scherm
             ShopManager.SetShopReceipt("Eindbedrag\n€");
+
+
+
+
 
             // Vul de productlijst met producten
             ShopManager.Products.Add(new KioskProduct() { Name = "Foto 10x15", Price = 2.55, Description = "Omschrijving 1" });
@@ -46,13 +46,51 @@ namespace PRA_B4_FOTOKIOSK.controller
         // Wordt uitgevoerd wanneer er op de Toevoegen knop is geklikt
         public void AddButtonClick()
         {
-            if (int.TryParse(Window.tbFotoId.Text, out int tbFotoId) &&
-                int.TryParse(Window.tbAmount.Text, out int tbAmount) && tbAmount > 0 ) 
-            {
-                
-            }
-        }
+            KioskProduct selectedProduct = ShopManager.GetSelectedProduct();
+            int? fotoId = ShopManager.GetFotoId();
+            int? amount = ShopManager.GetAmount();
 
+            if (selectedProduct == null)
+            {
+                MessageBox.Show("Selecteer een product");
+                return;
+            }
+
+            if (fotoId == null)
+            {
+                MessageBox.Show("Vul een fotoId in");
+                return;
+            }
+
+            if (amount == null)
+            {
+                MessageBox.Show("Vul een aantal in");
+                return;
+            }
+
+
+              double final = selectedProduct.Price * (int)amount;
+
+                 string finalString = final.ToString();
+
+            ShopManager.SetShopReceipt("Eindbedrag\n€" + finalString);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
         // Wordt uitgevoerd wanneer er op de Resetten knop is geklikt
         public void ResetButtonClick()
         {
