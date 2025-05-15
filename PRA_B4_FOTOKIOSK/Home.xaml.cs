@@ -23,6 +23,7 @@ namespace PRA_B4_FOTOKIOSK
     /// </summary>
     public partial class Home : Window
     {
+        internal object txtFotoId;
 
         public ShopController ShopController { get; set; }
         public PictureController PictureController { get; set; }
