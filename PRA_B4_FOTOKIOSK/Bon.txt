@@ -1,6 +1,7 @@
-Bon: 
-FotoId: 3
-Product: mok
-Aantal: 4
-Totaal Prijs: €37,32
+Bon:
+FotoId: 23
+Product: T-shirt
+Aantal: 223
+Totaal Prijs: €2829,87
 
+Totaal te betalen: €2829,87

@@ -15,6 +15,8 @@ namespace PRA_B4_FOTOKIOSK.controller
     {
 
         public static Home? Window { get; set; }
+        private List<OrderedProduct> orderedProducts = new List<OrderedProduct>();
+
 
         public void Start()
         {
@@ -69,62 +71,60 @@ namespace PRA_B4_FOTOKIOSK.controller
             }
 
 
-              double final = selectedProduct.Price * (int)amount;
+            double final = selectedProduct.Price * (int)amount;
 
-              string finalString = final.ToString();
+            // Voeg het nieuwe product toe aan de lijst
+            orderedProducts.Add(new OrderedProduct((int)fotoId, selectedProduct.Name, (int)amount, final));
 
-            ShopManager.SetShopReceipt("Bon: \n");
+            // Bouw de bon op met alle producten
+            StringBuilder bon = new StringBuilder();
+            double totaal = 0;
+            bon.AppendLine("Bon:");
+            foreach (var product in orderedProducts)
+            {
+                bon.AppendLine(
+                    $"FotoId: {product.photoId}\nProduct: {product.productName}\nAantal: {product.amount}\nTotaal Prijs: €{product.totalPrice:0.00}\n"
+                );
+                totaal += product.totalPrice;
+            }
+            bon.AppendLine($"Totaal te betalen: €{totaal:0.00}");
 
-            List<OrderedProduct> list = new List<OrderedProduct>();
+            ShopManager.SetShopReceipt(bon.ToString());
 
-            list.Add(new OrderedProduct((int)fotoId, selectedProduct.Name, (int)amount, final));
-
-            ShopManager.AddShopReceipt("FotoId: " + fotoId + "\nProduct: " + selectedProduct.Name + "\nAantal: " + amount + "\nTotaal Prijs: €" + finalString + "\n\n");
-
-
-
-           
-            // Get the base directory (e.g., bin\Debug\net6.0-windows)
+            // Schrijf de bon naar het project root (waar de .csproj staat)
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-
-            // Go up three levels to reach the project root (where the .csproj is)
             string projectRoot = Directory.GetParent(baseDir).Parent.Parent.Parent.FullName;
-
-            // Combine with your file name
             string filePath = Path.Combine(projectRoot, "Bon.txt");
-
-            string tekst = "Bon: " + "\nFotoId: " + fotoId + "\nProduct: " + selectedProduct.Name + "\nAantal: " + amount + "\nTotaal Prijs: €" + finalString + "\n\n";
-
-           
-
-            File.WriteAllText(filePath, tekst);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            File.WriteAllText(filePath, bon.ToString());
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         // Wordt uitgevoerd wanneer er op de Resetten knop is geklikt
         public void ResetButtonClick()
         {
-
+            orderedProducts.Clear();
+            ShopManager.SetShopReceipt("Eindbedrag\n€");
         }
         // Wordt uitgevoerd wanneer er op de Save knop is geklikt
         public void SaveButtonClick()
