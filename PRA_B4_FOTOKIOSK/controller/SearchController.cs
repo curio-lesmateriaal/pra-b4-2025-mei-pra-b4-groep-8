@@ -14,10 +14,8 @@ namespace PRA_B4_FOTOKIOSK.controller
     public class SearchController
     {
         // De window die we laten zien op het scherm
-        public static Home Window { get; set; }
-        
+        public static Home Window { get; set; } 
 
-        // Start methode die wordt aangeroepen wanneer de zoek pagina opent.
         public void Start()
         {
 
@@ -33,88 +31,91 @@ namespace PRA_B4_FOTOKIOSK.controller
             int selectedFolder = -1;
 
             string[] timeParts = time.Split(':');
-            int ihour = int.Parse(timeParts[0]);
-            int iminute = int.Parse(timeParts[1]);
-            int isecond = int.Parse(timeParts[2]);
-
-            if (selectedDay == null || timeParts.Length != 3)
+            if (int.TryParse(timeParts[0], out int iHour) &&
+                int.TryParse(timeParts[1], out int iMinute) &&
+                int.TryParse(timeParts[2], out int iSecond))
             {
-                MessageBox.Show("Geen geldige invoer");
-                
-            }
-
-           
-            if (selectedDay == "maandag")
-            {
-                 selectedFolder = 1;
-            }
-
-            else if (selectedDay == "dinsdag")
-            {
-                 selectedFolder = 2;
-            }
-            else if (selectedDay == "woensdag")
-            {
-                 selectedFolder = 3;
-            }
-            else if  (selectedDay == "donderdag")
-            {
-                 selectedFolder = 4;
-            }
-            else if (selectedDay == "vrijdag")
-            {
-                 selectedFolder = 5;
-            }
-            else if (selectedDay == "zaterdag")
-            {
-                 selectedFolder = 6;
-            }
-            else if (selectedDay == "zondag")
-            {
-                 selectedFolder = 0;
-            }
-
-
-            foreach (string dir in Directory.GetDirectories(@"../../../fotos"))
-            {
-                string folderName = Path.GetFileName(dir); // bijv. "0_Zondag"
-                string[] parts = folderName.Split('_');
-
-                if (parts.Length > 0 && int.TryParse(parts[0], out int folderDay) && folderDay == selectedFolder)
+                if (selectedDay == null || timeParts.Length != 3)
                 {
-                    foreach (string file in Directory.GetFiles(dir))
+                    MessageBox.Show("Geen geldige invoer");
+                    return;
+                }
+
+                if (selectedDay == "maandag")
+                {
+                    selectedFolder = 1;
+                }
+                else if (selectedDay == "dinsdag")
+                {
+                    selectedFolder = 2;
+                }
+                else if (selectedDay == "woensdag")
+                {
+                    selectedFolder = 3;
+                }
+                else if (selectedDay == "donderdag")
+                {
+                    selectedFolder = 4;
+                }
+                else if (selectedDay == "vrijdag")
+                {
+                    selectedFolder = 5;
+                }
+                else if (selectedDay == "zaterdag")
+                {
+                    selectedFolder = 6;
+                }
+                else if (selectedDay == "zondag")
+                {
+                    selectedFolder = 0;
+                }
+
+                bool isFound = false;
+
+                foreach (string dir in Directory.GetDirectories(@"../../../fotos"))
+                {
+                    string folderName = Path.GetFileName(dir); // bijv. "0_Zondag"
+                    string[] parts = folderName.Split('_');
+
+                    if (parts.Length > 0 && int.TryParse(parts[0], out int folderDay) && folderDay == selectedFolder)
                     {
-                        string fileName = Path.GetFileName(file); // bijv. "10_05_30_id8824.jpg"
-                        string[] fileParts = fileName.Split('_');
-
-                        if (fileParts.Length > 3)
+                        foreach (string file in Directory.GetFiles(dir))
                         {
-                            int hour = int.Parse(fileParts[0]);
-                            int minute = int.Parse(fileParts[1]);
-                            int second = int.Parse(fileParts[2]);
+                            string fileName = Path.GetFileName(file); // bijv. "10_05_30_id8824.jpg"
+                            string[] fileParts = fileName.Split('_');
 
-                            if (hour == ihour && minute == iminute && second == isecond)
+                            if (fileParts.Length > 3)
                             {
-                                SearchManager.SetPicture(file);
+                                if (int.TryParse(fileParts[0], out int hour) &&
+                                    int.TryParse(fileParts[1], out int minute) &&
+                                    int.TryParse(fileParts[2], out int second))
+                                {
+                                    if (hour == iHour && minute == iMinute && second == iSecond)
+                                    {
+                                        SearchManager.SetPicture(file);
+                                        isFound = true;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Geen geldige tijd!");
+                                }
                             }
-                            else
-                            {
-                                
-                                MessageBox.Show("Geen foto gevonden met deze tijd");
-                                break;
-
-                            }
-                           
                         }
                     }
+                    if (isFound) break;
+                }
+
+                if (!isFound)
+                {
+                    MessageBox.Show("Geen foto gevonden met deze tijd");
                 }
             }
+            else
+            {
+                MessageBox.Show("Geen geldige tijd!");
+            }
         }
-
-
     }
-} 
-
-
-
-
+}
