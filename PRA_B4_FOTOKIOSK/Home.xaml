@@ -11,7 +11,11 @@
 
             <TabItem Header="Foto's">
                 <Grid>
-                    <ScrollViewer Margin="10,38,10,43">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="19*"/>
+                        <ColumnDefinition Width="300*"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Margin="10,38,10,43" Grid.ColumnSpan="2">
                         <WrapPanel x:Name="spPictures">
                         </WrapPanel>
                     </ScrollViewer>
@@ -37,12 +41,31 @@
             <TabItem Header="Zoeken">
                 <Grid>
                     <Label Content="Zoeken:" HorizontalAlignment="Left" Margin="100,53,0,0" VerticalAlignment="Top" Height="24" Width="255"/>
-                    <TextBox x:Name="tbZoeken" HorizontalAlignment="Left" Margin="100,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" Height="22"/>
+
+                    <!-- StackPanel to group ComboBox and TextBox vertically -->
+                    <StackPanel HorizontalAlignment="Left" Margin="100,77,0,0" VerticalAlignment="Top">
+                        <TextBlock>Dag:</TextBlock>
+
+                        <ComboBox x:Name="cbDagenVanDeWeek" Width="325" Margin="0,0,0,8" SelectedIndex="0">
+
+                            <ComboBoxItem>maandag</ComboBoxItem>
+                            <ComboBoxItem>dinsdag</ComboBoxItem>
+                            <ComboBoxItem>woensdag</ComboBoxItem>
+                            <ComboBoxItem>donderdag</ComboBoxItem>
+                            <ComboBoxItem>vrijdag</ComboBoxItem>
+                            <ComboBoxItem>zaterdag</ComboBoxItem>
+                            <ComboBoxItem>zondag</ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock>Tijd:</TextBlock>
+                        <TextBox x:Name="tbZoeken" Width="325" Height="22" Margin="0,0,0,0"/>
+                    </StackPanel>
+
                     <Button x:Name="btnZoeken" Content="Zoeken" HorizontalAlignment="Left" Margin="430,77,0,0" VerticalAlignment="Top" Width="83" Height="22" Click="btnZoeken_Click"/>
-                    <Image x:Name="imgBig" HorizontalAlignment="Left" Height="565" Margin="100,128,0,0" VerticalAlignment="Top" Width="1047"/>
+                    <Image x:Name="imgBig" HorizontalAlignment="Left" Height="565" Margin="100,179,0,0" VerticalAlignment="Top" Width="747"/>
                     <Label x:Name="lbSearchInfo" Content="" HorizontalAlignment="Left" Margin="100,727,0,0" VerticalAlignment="Top" Height="251" Width="1091"/>
                 </Grid>
             </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

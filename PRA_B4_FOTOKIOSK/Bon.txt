@@ -1,7 +1,17 @@
 Bon:
-FotoId: 23
-Product: T-shirt
-Aantal: 223
-Totaal Prijs: €2829,87
+FotoId: 979
+Product: Sleutelhanger
+Aantal: 2
+Totaal Prijs: €14,00
 
-Totaal te betalen: €2829,87
+FotoId: 979
+Product: Sleutelhanger
+Aantal: 2
+Totaal Prijs: €14,00
+
+FotoId: 979
+Product: Sleutelhanger
+Aantal: 2
+Totaal Prijs: €14,00
+
+Totaal te betalen: €42,00
