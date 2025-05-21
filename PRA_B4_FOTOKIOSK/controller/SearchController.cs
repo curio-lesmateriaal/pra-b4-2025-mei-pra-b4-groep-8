@@ -14,7 +14,10 @@ namespace PRA_B4_FOTOKIOSK.controller
     public class SearchController
     {
         // De window die we laten zien op het scherm
-        public static Home Window { get; set; } 
+        public static Home Window { get; set; }
+
+        string displayMinute = "0";
+        string displaySecond = "0";
 
         public void Start()
         {
@@ -94,6 +97,23 @@ namespace PRA_B4_FOTOKIOSK.controller
                                     {
                                         SearchManager.SetPicture(file);
                                         isFound = true;
+
+                                        string displaySecond = second.ToString();
+                                        string displayMinute = minute.ToString();
+
+                                        if (minute.ToString().Length == 1)
+                                        {
+                                            displayMinute = "0" + minute;
+                                            
+                                        }
+
+                                        if(second.ToString().Length == 1)
+                                        {
+                                            displaySecond = "0" + second;
+                                        }
+
+                                        string text = "Foto gevonden met tijd: " + hour + ":" + displayMinute + ":" + displaySecond;
+                                        SearchManager.SetSearchImageInfo(text);
                                         break;
                                     }
                                 }
