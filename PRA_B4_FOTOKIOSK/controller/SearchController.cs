@@ -112,7 +112,7 @@ namespace PRA_B4_FOTOKIOSK.controller
                                             displaySecond = "0" + second;
                                         }
 
-                                        string text = "Foto gevonden met tijd: " + hour + ":" + displayMinute + ":" + displaySecond;
+                                        string text = "Foto gevonden met tijd en datum: " + selectedDay + "-" + hour + ":" + displayMinute + ":" + displaySecond + " met id: " + fileParts[3].Substring(2, fileParts[3].Length - 6);
                                         SearchManager.SetSearchImageInfo(text);
                                         break;
                                     }
