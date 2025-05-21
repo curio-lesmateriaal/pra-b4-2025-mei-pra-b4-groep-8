@@ -56,8 +56,23 @@
                             <ComboBoxItem>zaterdag</ComboBoxItem>
                             <ComboBoxItem>zondag</ComboBoxItem>
                         </ComboBox>
-                        <TextBlock>Tijd:</TextBlock>
-                        <TextBox  x:Name="tbZoeken" Width="325" Height="22" Margin="0,0,0,0"/>
+                        <Grid>
+                            <TextBox x:Name="tbZoeken"
+             Width="325"
+             Height="22"
+             Margin="0,0,0,0"
+             VerticalAlignment="Top"
+             TextChanged="tbZoeken_TextChanged"/>
+                            <TextBlock x:Name="tbZoekenWatermark"
+               Text="Bijv. 10:10:10"
+               Foreground="Gray"
+               Margin="5,3,0,0"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               IsHitTestVisible="False"
+               Visibility="Visible"/>
+                        </Grid>
+
                     </StackPanel>
 
                     <Button x:Name="btnZoeken" Content="Zoeken" HorizontalAlignment="Left" Margin="430,77,0,0" VerticalAlignment="Top" Width="83" Height="22" Click="btnZoeken_Click"/>

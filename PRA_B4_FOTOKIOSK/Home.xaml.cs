@@ -54,6 +54,13 @@ namespace PRA_B4_FOTOKIOSK
             SearchController.Start();
         }
 
+        private void tbZoeken_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            tbZoekenWatermark.Visibility = string.IsNullOrEmpty(tbZoeken.Text)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
         private void btnShopAdd_Click(object sender, RoutedEventArgs e)
         {
             ShopController.AddButtonClick();
