@@ -2,6 +2,7 @@
 using PRA_B4_FOTOKIOSK.models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -55,12 +56,41 @@ namespace PRA_B4_FOTOKIOSK.controller
 
                             TimeSpan timeDifference = now - fileDateTime;
 
-                            if (timeDifference.TotalMinutes <= 20 && timeDifference.TotalMinutes >= 2 )
+                            if (timeDifference.TotalMinutes <= 30 && timeDifference.TotalMinutes >= 2 )
                             {
-                                PicturesToDisplay.Add(new KioskPhoto() { Id = 0, Source = file });
+                                bool add = false;
+
+                                foreach (KioskPhoto photo in PicturesToDisplay)
+                                {
+                                    
+                                    //Foto wordt DateTime
+                                    var fotoDate = DateTime.Parse(photo.Source.Split("\\")[2].Split("_id")[0].Replace("_", ":"));
+                                    if (fotoDate.AddSeconds(60) != fileDateTime)
+                                        continue;
+
+                                    // Zoek de positie (index) van de huidige foto in de lijst
+                                    int index = PicturesToDisplay.IndexOf(photo);
+
+                                    // Voeg de nieuwe foto in op dezelfde plek als de gevonden foto.
+                                    // Dit betekent dat de nieuwe foto net vóór de bestaande wordt geplaatst.
+                                    PicturesToDisplay.Insert(index, new KioskPhoto() { Id = 0, Source = file });
+
+                                    // Zet de 'add' vlag op true om aan te geven dat de foto al is toegevoegd,
+                                    // zodat we hem later niet opnieuw onderaan de lijst toevoegen.
+                                    add = true;
+
+                                    // Stop de foreach-lus, want we hebben al een geschikte plek gevonden
+                                    break;
+
+                                }
+
+                                if (!add)
+                                {
+                                    PicturesToDisplay.Add(new KioskPhoto() { Id = 0, Source = file });
+                                }
                             }
                         }
-                    }
+                    }                   
                 }
             }
 
